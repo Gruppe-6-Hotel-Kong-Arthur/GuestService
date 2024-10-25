@@ -28,6 +28,7 @@ GuestService/
 ├── db/
 │   ├── __init__.py
 │   └── db.py                                    # Database operations
+│   └── guest_service.db                         # Database
 │
 ├── .dockerignore                                # Docker ignore rules
 ├── .gitignore                                   # Git ignore rules
