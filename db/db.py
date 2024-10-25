@@ -27,8 +27,8 @@ def init_db():
             id INTEGER PRIMARY KEY,
             first_name VARCHAR(100) NOT NULL,
             last_name VARCHAR(100) NOT NULL,
-            countries_id INTEGER NOT NULL,
-            FOREIGN KEY (countries_id) REFERENCES Countries (id)
+            country_id INTEGER NOT NULL,
+            FOREIGN KEY (country_id) REFERENCES Countries (id)
         )
     """)
 
