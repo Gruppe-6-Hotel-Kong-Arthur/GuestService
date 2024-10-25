@@ -2,7 +2,7 @@ import sqlite3
 import pandas as pd
 import os
 
-DATA_HAS_BEEN_ADDED = True
+DATA_HAS_BEEN_ADDED = False
 
 # Create or connect to the SQLite database (guests_service.db)
 def create_connection():
@@ -84,6 +84,9 @@ def read_data_from_csv(path):
     connection.commit()
     connection.close()
 
+
+
+
 def db_get_guest_by_id(id):
     connection = create_connection()
     cursor = connection.cursor()
@@ -91,9 +94,14 @@ def db_get_guest_by_id(id):
     cursor.execute('SELECT * FROM Guests WHERE id = ?', (id,))
 
     guest = cursor.fetchone()
-
     if guest:
-        return dict(guest)
+        guest_dict = dict(guest)
+        guest_dict['country'] = db_get_country_name_by_id(guest_dict['countries_id'])
+        del guest_dict['countries_id']
+        return guest_dict
+    
+    
+    
     
 def db_get_guests():
     connection = create_connection()
@@ -105,6 +113,36 @@ def db_get_guests():
 
     if guests:
         return [dict(guest) for guest in guests] 
+    
+def db_get_country_name_by_id(id):
+    connection = create_connection()
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT name FROM Countries WHERE id = ?', (id,))
+
+    country = cursor.fetchone()
+
+    if country:
+        return country['name']
+
+
+
+def db_add_guest(first_name, last_name, country):
+    try:
+        connection = create_connection()
+        cursor = connection.cursor()
+
+        country_id = get_country_id(connection, country)
+
+        cursor.execute('INSERT INTO Guests (first_name, last_name, countries_id) VALUES (?, ?, ?)', (first_name, last_name, country_id))
+        connection.commit()
+        connection.close()
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+
 
 # Run the init_db function
 init_db()

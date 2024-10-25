@@ -1,4 +1,4 @@
-from db.db import init_db, db_get_guest_by_id, db_get_guests
+from db.db import init_db, db_get_guest_by_id, db_get_guests, db_add_guest
 from flask import Flask, jsonify, request
 import requests
 import os
@@ -22,6 +22,20 @@ def get_guests():
         return jsonify(guests), 200
     else:
         return jsonify({"Error" : "Guests not found"}), 404
+
+@app.route('/api/v1/guests',methods=['POST'])
+def add_guest(first_name, last_name, country):
+    data = request.get_json()
+    first_name = data['first_name']
+    last_name = data['last_name']
+    country = data['country']
+
+    if db_add_guest(first_name, last_name, country):
+        return jsonify({"Success" : "Guest added"}), 201
+    else:
+        return jsonify({"Error" : "Guest not added"}), 500
+    
+
 
 if __name__ == '__main__':
     init_db()
