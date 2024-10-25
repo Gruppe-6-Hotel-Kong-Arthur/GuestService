@@ -5,7 +5,7 @@ import os
 # Create or connect to SQLite database
 def create_connection():
     connection = sqlite3.connect('db/guests_service.db')
-    connection.row_factory = sqlite3.Row # Rows as dictionaries
+    connection.row_factory = sqlite3.Row  # Rows as dictionaries
     return connection
 
 # Initialize database and create necessary tables
@@ -66,7 +66,6 @@ def get_country_id(connection, country_name):
 
 # Read initial guest data from CSV file
 def read_data_from_csv(path):
-    # Load only the needed columns and rename them to match the database table
     data = pd.read_csv(path, usecols=['First Name', 'Family Name', 'Country'])
     data.rename(columns={
         'First Name': 'first_name',
@@ -130,16 +129,27 @@ def db_get_guests():
     else:
         return None
 
+# Retrieve all countries from the database
+def db_get_countries():
+    connection = create_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM Countries")
+    countries = cursor.fetchall()
+    connection.close()
+    
+    if countries:
+        return [dict(country) for country in countries]
+    else:
+        return None
+
 # Add a new guest to the database
-def db_add_guest(first_name, last_name, country):
+def db_add_guest(first_name, last_name, country_id):
     try:
         connection = create_connection()
         cursor = connection.cursor()
         
-        # Get or create country ID
-        country_id = get_country_id(connection, country)
-        
-        # Insert new guest
+        # Insert new guest using country_id directly
         cursor.execute("""
             INSERT INTO Guests (first_name, last_name, countries_id) 
             VALUES (?, ?, ?)
@@ -151,4 +161,3 @@ def db_add_guest(first_name, last_name, country):
     except Exception as e:
         print(f"Error adding guest: {e}")
         return False
-    

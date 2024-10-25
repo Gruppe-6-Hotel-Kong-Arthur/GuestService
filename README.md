@@ -97,11 +97,12 @@ erDiagram
 
 ## API Documentation
 
-| Method | Endpoint                | Description        | Request Body Example                                  | Response Example                              |
-|--------|-------------------------|--------------------|------------------------------------------------------|-----------------------------------------------|
-| GET    | `/api/v1/guests`       | Get all guests     | N/A                                                  | `[{"id": 1, "first_name": "John", "last_name": "Doe", "country": "Denmark"}]` |
-| GET    | `/api/v1/guests/<id>`  | Get guest by ID    | N/A                                                  | `{"id": 1, "first_name": "John", "last_name": "Doe", "country": "Denmark"}`  |
-| POST   | `/api/v1/guests`       | Add new guest      | `{"first_name": "Jane", "last_name": "Smith", "country": "Sweden"}` | `{"message": "Guest added successfully"}`     |
+| Method | Endpoint                | Description                | Request Body Example                                     | Response Example                                                       |
+|--------|-------------------------|----------------------------|---------------------------------------------------------|----------------------------------------------------------------------|
+| GET    | `/api/v1/guests`       | Get all guests             | N/A                                                     | `[{"id": 1, "first_name": "John", "last_name": "Doe", "country_id": 1}]` |
+| GET    | `/api/v1/guests/<id>`  | Get guest by ID            | N/A                                                     | `{"id": 1, "first_name": "John", "last_name": "Doe", "country_id": 1}`   |
+| POST   | `/api/v1/guests`       | Add new guest              | `{"first_name": "Jane", "last_name": "Smith", "country_id": 12}` | `{"message": "Guest added successfully"}`                            |
+| GET    | `/api/v1/countries`     | Get all countries          | N/A                                                     | `[{"id": 1, "name": "China"}, {"id": 12, "name": "United Kingdom"}, {"id": 14, "name": "France"}, {"id": 6, "name": "Canada"}]`      |
 
 
 ## Testing with Postman
@@ -133,6 +134,21 @@ erDiagram
 }
 ```
 - Expected Response: Success message
+
+### Get All Countries
+- **Method**: GET
+- **URL**: `http://localhost:5001/api/v1/countries`
+- **Expected Response**: An array of country objects, each containing an `id` and `name`.
+
+#### Example Response:
+```json
+[
+    {"id": 1, "name": "China"},
+    {"id": 12, "name": "United Kingdom"},
+    {"id": 14, "name": "France"},
+    {"id": 6, "name": "Canada"}
+]
+```
 
 ---
 
