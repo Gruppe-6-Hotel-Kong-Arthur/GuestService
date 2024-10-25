@@ -23,19 +23,27 @@ def get_guests():
     else:
         return jsonify({"Error" : "Guests not found"}), 404
 
-@app.route('/api/v1/guests',methods=['POST'])
+@app.route('/api/v1/guests', methods=['POST'])
 def add_guest(first_name, last_name, country):
+
+    print(request.data)
+
     data = request.get_json()
-    first_name = data['first_name']
-    last_name = data['last_name']
-    country = data['country']
+    first_name = data.get('first_name')
+    last_name = data.get('last_name')
+    country = data.get('country')
 
+    print(first_name, last_name, country)
+
+    # Check if all required fields are present
+    if not all([first_name, last_name, country]):
+        return jsonify({"Error": "Missing required fields"}), 400
+
+    # Add the guest to the database
     if db_add_guest(first_name, last_name, country):
-        return jsonify({"Success" : "Guest added"}), 201
+        return jsonify({"Success": "Guest added"}), 201
     else:
-        return jsonify({"Error" : "Guest not added"}), 500
-    
-
+        return jsonify({"Error": "Guest not added"}), 500
 
 if __name__ == '__main__':
     init_db()
