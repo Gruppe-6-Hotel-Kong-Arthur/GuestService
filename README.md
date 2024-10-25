@@ -26,8 +26,7 @@ GuestService/
 │   └── international_names_with_rooms_1000.csv  # Initial guest data
 │
 ├── db/
-│   ├── __init__.py
-│   └── db.py                                    # Database operations
+│   ├── db.py                                    # Database operations
 │   └── guest_service.db                         # Database
 │
 ├── .dockerignore                                # Docker ignore rules
@@ -130,7 +129,7 @@ erDiagram
 {
     "first_name": "Jane",
     "last_name": "Smith",
-    "country": "Sweden"
+    "country_id": 1
 }
 ```
 - Expected Response: Success message
