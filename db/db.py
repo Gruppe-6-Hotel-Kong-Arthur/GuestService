@@ -2,6 +2,8 @@ import sqlite3
 import pandas as pd
 import os
 
+DATA_HAS_BEEN_ADDED = True
+
 # Create or connect to the SQLite database (guests_service.db)
 def create_connection():
     connection = sqlite3.connect('db/guests_service.db')
@@ -40,8 +42,9 @@ def init_db():
     connection.close()
 
     # Define path to the CSV file containing guest data
-    csv_path = os.path.join(os.path.dirname(__file__), '../csv/international_names_with_rooms_1000.csv')
-    read_data_from_csv(csv_path)
+    if not DATA_HAS_BEEN_ADDED:
+        csv_path = os.path.join(os.path.dirname(__file__), '../csv/international_names_with_rooms_1000.csv')
+        read_data_from_csv(csv_path)
 
 
 # Retrieve the country ID. Insert a new country if it doesn't exist
@@ -80,6 +83,28 @@ def read_data_from_csv(path):
     # Commit changes and close the connection
     connection.commit()
     connection.close()
+
+def db_get_guest_by_id(id):
+    connection = create_connection()
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT * FROM Guests WHERE id = ?', (id,))
+
+    guest = cursor.fetchone()
+
+    if guest:
+        return dict(guest)
+    
+def db_get_guests():
+    connection = create_connection()
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT * FROM Guests')
+
+    guests = cursor.fetchall()
+
+    if guests:
+        return [dict(guest) for guest in guests] 
 
 # Run the init_db function
 init_db()
