@@ -84,14 +84,14 @@ python app.py
 erDiagram
     Guests ||--o{ Countries : belongs_to
     Guests {
-        int id PK
-        string first_name
-        string last_name
-        int countries_id FK
+        INTEGER id PK
+        VARCHAR first_name
+        VARCHAR last_name
+        INTEGER country_id FK
     }
     Countries {
-        int id PK
-        string name
+        INTEGER id PK
+        VARCHAR name "UNIQUE"
     }
 ```
 
