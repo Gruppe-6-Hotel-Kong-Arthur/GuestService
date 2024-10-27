@@ -1,5 +1,11 @@
-from db.db import init_db, db_get_guest_by_id, db_get_guests, db_add_guest, db_get_countries
 from flask import Flask, jsonify, request
+from db.initialize import init_db
+from db.guest_repository import (
+    db_get_guest_by_id,
+    db_get_guests,
+    db_add_guest,
+    db_get_countries
+)
 
 app = Flask(__name__)
 
