@@ -53,12 +53,12 @@ Before running the service, ensure you have:
 
 1. Build the Docker image:
 ```bash
-docker build -t guest-service .
+docker build -t guest_service .
 ```
 
 2. Run the container:
 ```bash
-docker run -d -p 5001:5001 --name guest-service guest-service
+docker run -d -p 5001:5001 --name guest_service --network microservice-network guest_service
 ```
 
 ### Local Development Setup
