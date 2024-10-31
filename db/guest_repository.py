@@ -95,3 +95,18 @@ def db_add_guest(first_name, last_name, country_id):
     except Exception as e:
         print(f"Error adding guest: {e}")
         return False
+
+# Delete a guest from the database
+def _db_delete_guest(id):
+    try:
+        connection = create_connection()
+        cursor = connection.cursor()
+        
+        cursor.execute("DELETE FROM Guests WHERE id = ?", (id,))
+        connection.commit()
+        connection.close()
+        return True
+    except Exception as e:
+        print(f"Error deleting guest: {e}")
+        return False
+    

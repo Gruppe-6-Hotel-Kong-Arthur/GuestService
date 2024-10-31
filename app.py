@@ -4,7 +4,8 @@ from db.guest_repository import (
     db_get_guest_by_id,
     db_get_guests,
     db_add_guest,
-    db_get_countries
+    db_get_countries,
+    _db_delete_guest
 )
 
 app = Flask(__name__)
@@ -46,6 +47,13 @@ def get_countries():
     if countries:
         return jsonify(countries), 200
     return jsonify({"error": "No countries found"}), 404
+
+# DELETE /api/v1/guests/<id>
+@app.route('/api/v1/guests/<int:id>', methods=['DELETE'])
+def delete_guest(id):
+    if _db_delete_guest(id):
+        return jsonify({"message": "Guest deleted successfully"}), 200
+    return jsonify({"error": "Failed to delete guest"}), 500
 
 # Error handler for 404 Not Found
 @app.errorhandler(404)
